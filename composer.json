@@ -1,0 +1,25 @@
+{
+  "name": "y2kaoz/php-template",
+  "description": "Render PHP template scripts",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Y2KaoZ\\PhpTemplate\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Carlos Gonzalez",
+      "email": "y2kaoz@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^8.0"
+  },
+  "require-dev": {
+    "vimeo/psalm": "^6.14",
+    "phpstan/phpstan": "^2.1"
+  }
+}
