@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Y2KaoZ\PhpTemplate;
 
 /** @api class Template */
-final readonly class Template implements \Stringable
+class Template implements \Stringable
 {
   /** 
    * @param array<non-empty-string,mixed> $templateParams 

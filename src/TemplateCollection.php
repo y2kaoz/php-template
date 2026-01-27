@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Y2KaoZ\PhpTemplate;
 
 /** @api class TemplateCollection */
-final readonly class TemplateCollection
+class TemplateCollection
 {
   /** 
    * @param array<non-empty-string,mixed> $globals
