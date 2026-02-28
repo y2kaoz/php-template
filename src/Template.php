@@ -11,7 +11,7 @@ class Template implements \Stringable
    * @param array<non-empty-string,mixed> $templateParams 
    * @param false|int $extract Do not use extract on untrusted data, like raw user input.
    */
-  private static function renderTemplate(
+  protected static function renderTemplate(
     string $templatePath,
     array $templateParams,
     false|int $extract,
@@ -61,11 +61,11 @@ class Template implements \Stringable
    * @param array<non-empty-string,mixed> $params
    */
   public function __construct(
-    public string $path,
-    public array $params = [],
-    public string $spaces = '  ',
-    public false|int $extract = EXTR_SKIP,
-    public string $prefix = "template"
+    protected(set) string $path,
+    protected(set) array $params = [],
+    protected(set) string $spaces = '  ',
+    protected(set) false|int $extract = EXTR_SKIP,
+    protected(set) string $prefix = "template"
   ) {
     if (!file_exists($path) || !is_readable($path)) {
       throw new \Exception("The Template '{$path}' doesn't exist or is not readable.");

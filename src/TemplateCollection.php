@@ -12,12 +12,12 @@ class TemplateCollection
    * @param array<non-empty-string,mixed> $params
    */
   public function __construct(
-    public string $templateRoot,
-    public array $params = [],
-    public string $spaces = '  ',
-    public array $globals = [],
-    public false|int $extract = EXTR_SKIP,
-    public string $prefix = "template"
+    protected(set) string $templateRoot,
+    protected(set) array $params = [],
+    protected(set) string $spaces = '  ',
+    protected(set) array $globals = [],
+    protected(set) false|int $extract = EXTR_SKIP,
+    protected(set) string $prefix = "template"
   ) {
     if (!file_exists($templateRoot) || !is_dir($templateRoot) || !is_readable($templateRoot)) {
       throw new \Exception("The Template root directory '{$templateRoot}' is not a readable directory.");
