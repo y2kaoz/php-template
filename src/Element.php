@@ -75,6 +75,6 @@ class Element implements \Stringable
     $tagName = $this->tagName();
     $attributes = $this->attributes();
     $contents = $this->contents();
-    return "<{$tagName}{$attributes}>{$contents}</{$tagName}>";
+    return ($tagName==='') ? $contents : "<{$tagName}{$attributes}>{$contents}</{$tagName}>";
   }
 }
