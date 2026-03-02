@@ -14,23 +14,26 @@ class Element implements \Stringable
       : htmlspecialchars(strval($value), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false);
   }
 
+  protected(set) string $tagName;
   /** 
    * @param string|\Stringable|list<string|\Stringable> $contents
    * @param array<scalar|\Stringable> $attributes
    * @param list<string> $rawAttributes
    */
   public function __construct(
-    protected(set) string|\Stringable $tagName,
+    string|\Stringable $tagName,
     protected(set) string|\Stringable|array $contents = '',
     protected(set) array $attributes = [],
     protected(set) array $rawAttributes = [],
     protected(set) bool $rawContents = false,
     protected(set) string $spaces = "  ",
-  ) {}
+  ) {
+    $this->tagName = trim(htmlspecialchars(strval($tagName), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false));
+  }
 
   public function tagName(): string
   {
-    return trim(htmlspecialchars(strval($this->tagName), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false));
+    return $this->tagName;
   }
 
   public function contents(): string
@@ -38,7 +41,12 @@ class Element implements \Stringable
     $contents = is_array($this->contents)
       ? implode("\n", array_map($this->cleanContents(...), $this->contents))
       : $this->cleanContents($this->contents);
-    return str_contains($contents, "\n")
+
+    if ($this->tagName() === '') {
+      return str_contains($contents, PHP_EOL) ? $contents : trim($contents);
+    }
+
+    return str_contains($contents, PHP_EOL)
       ? PHP_EOL . $this->spaces . str_replace(PHP_EOL, PHP_EOL . $this->spaces, $contents) . PHP_EOL
       : trim($contents);
   }
@@ -47,7 +55,7 @@ class Element implements \Stringable
   {
     $render =
       function (int|string $key, bool|float|int|string|null|\Stringable $value): string {
-        if(is_bool($value)) {
+        if (is_bool($value)) {
           $value = $value ? 'true' : 'false';
         }
         if (is_string($key)) {
@@ -75,6 +83,8 @@ class Element implements \Stringable
     $tagName = $this->tagName();
     $attributes = $this->attributes();
     $contents = $this->contents();
-    return ($tagName==='') ? $contents : "<{$tagName}{$attributes}>{$contents}</{$tagName}>";
+    return ($tagName === '')
+      ? $contents
+      : "<{$tagName}{$attributes}>{$contents}</{$tagName}>";
   }
 }
