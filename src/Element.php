@@ -58,16 +58,23 @@ class Element implements \Stringable
         if (is_bool($value)) {
           $value = $value ? 'true' : 'false';
         }
+        $value = strval($value);
         if (is_string($key)) {
           if (!in_array($key, $this->rawAttributes)) {
             $key   = htmlspecialchars(trim($key), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false);
-            $value = htmlspecialchars(trim(strval($value)), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false);
-          } else {
-            $value = strtr(strval($value), '"', "'");
+            $value = htmlspecialchars(trim($value), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8', false);
           }
-          return "{$key}=\"{$value}\"";
+          $q = '"';
+          if (str_contains(haystack: $value, needle: $q)) {
+            if (str_contains(haystack: $value, needle: "'")) {
+              $value = str_replace(search: ['"', "'"], replace: ["&quot;", "&apos;"], subject: $value);
+            } else {
+              $q = "'";
+            }
+          }
+          return "{$key}={$q}{$value}{$q}";
         }
-        return "{$value}";
+        return $value;
       };
     return empty($this->attributes)
       ? ''
